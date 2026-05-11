@@ -1,0 +1,141 @@
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>GESTION D'APPAREIL ELECTRONIQUE</title>
+</head>
+<body>
+    <header>        
+        <div class="tete">
+            <h1><b>oct'art</b></h1>
+        </div>
+    </header>
+    <div class="menu" id="menubar">
+        <nav>
+            <ul>
+                <li>
+                    <button id="dark"">
+                        <svg class="moon" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" transform="" id="injected-svg"
+                            xmlns="http://www.w3.org/2000/svg"><!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
+                            <path
+                                d="M20.71 13.51c-.78.23-1.58.35-2.38.35-4.52 0-8.2-3.68-8.2-8.2 0-.8.12-1.6.35-2.38a1.002 1.002 0 0 0-1.25-1.25A10.17 10.17 0 0 0 2 11.8C2 17.42 6.57 22 12.2 22c4.53 0 8.45-2.91 9.76-7.24.11-.35.01-.74-.25-1s-.64-.36-1-.25M12.2 20C7.68 20 4 16.32 4 11.8a8.15 8.15 0 0 1 4.18-7.15c-.03.34-.05.68-.05 1.02 0 5.62 4.57 10.2 10.2 10.2.34 0 .68-.02 1.02-.05C17.93 18.38 15.23 20 12.2 20">
+                            </path>
+                            <path d="m18 2-1.25 2.75L14 6l2.75 1.25L18 10l1.25-2.75L22 6l-2.75-1.25z"></path>
+                        </svg>
+                    </button>
+                </li>
+                <li><a href="#accueil">accueil</a></li>
+                <li><a href="#appareil">appareil</a></li>
+                <li><a href="#client">client</a></li>
+                <li><a href="#location">location</a></li>
+                <li><a href="#admis">administration</a></li>
+                <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+fill="currentColor" viewBox="0 0 24 24">
+<path d="M3 5h18v2H3zm0 6h18v2H3zm0 6h18v2H3z"></path>
+</svg></a></li>
+            </ul>
+        </nav>
+    </div>    
+    <div id="accueil" class="accueil">
+        <h3><u>accueil</u></h3>
+        <p>
+            La location d'appareils électroniques est une solution économique et flexible.<br>
+            Elle permet d'accéder aux dernières technologies sans investissement lourd.<br>
+            Profitez de nos services de gestion simples et efficaces.
+        </p>
+        <hr>
+    </div>
+
+    <div id="appareil" class="appareil">
+        <h3><u>appareil</u></h3>
+        <div class="vue_global">
+            <div class="slide">
+                <div class="item">
+                    <img src="ampefy/geyser.jpg" alt="Ordinateur portable">
+                    <div class="legend">
+                        <h2>Ordinateurs portables</h2>
+                        <p>Louez un laptop performant pour vos besoins professionnels ou personnels.</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="ampefy/ilo.jpg" alt="Tablette">
+                    <div class="legend">
+                        <h2>Tablettes tactiles</h2>
+                        <p>Accédez à nos tablettes récentes pour une expérience mobile optimale.</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="ampefy/lac2.jpg" alt="Smartphone">
+                    <div class="legend">
+                        <h2>Smartphones</h2>
+                        <p>Restez connecté avec nos téléphones haut de gamme disponibles à la location.</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="ampefy/lac2.jpg" alt="Appareil photo">
+                    <div class="legend">
+                        <h2>Appareils photo</h2>
+                        <p>Capturez vos meilleurs moments avec nos appareils photo professionnels.</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="ampefy/massif.jpg" alt="Projecteur">
+                    <div class="legend">
+                        <h2>Projecteurs</h2>
+                        <p>Équipez vos présentations et événements avec nos projecteurs HD.</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="ampefy/lac1.jpg" alt="Casque audio">
+                    <div class="legend">
+                        <h2>Casques</h2>
+                        <p>Profitez d'une qualité sonore exceptionnelle avec nos équipements audio.</p>
+                    </div>
+                </div>
+            </div>
+            <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+            <button class="next" onclick="moveSlide(1)">&#10095;</button>            
+        </div>
+        <a href="appareil.php">En savoir plus</a>
+        <hr>
+    </div>
+
+    <div id="client" class="client">
+        <h3><u>client</u></h3>
+        <p>
+            Plus de <strong>500 clients</strong> font confiance à notre service de location.<br>
+            Chaque client bénéficie d'un suivi personnalisé et d'un appareil adapté à ses besoins.<br>
+            Gérez facilement vos clients : ajout, modification ou suppression en quelques clics.
+        </p>
+        <a href="client.php">En savoir plus</a>
+    </div>
+    <hr>
+
+    <div id="location" class="location">
+        <h3><u>location</u></h3>
+        <p>
+            La location d'électronique réduit les coûts jusqu'à <strong>60%</strong> par rapport à l'achat.<br>
+            Les appareils sont renouvelés régulièrement pour vous offrir les dernières technologies.<br>
+            Ajoutez, suivez et gérez toutes vos locations depuis une interface centralisée.
+        </p>
+        <a href="location.php">En savoir plus</a>
+    </div>
+    <hr>
+
+    <div id="admis" class="admin">
+        <h3><u>administration</u></h3>
+        <p>
+            Accédez à un tableau de bord complet pour superviser toutes les opérations.<br>
+            Suivez en temps réel les appareils loués, disponibles et en maintenance.<br>
+            Générez des rapports détaillés pour optimiser la gestion de votre parc électronique.
+        </p>
+        <a href="employer.php">Accéder</a>
+    </div>
+
+    <script src="contenu.js"></script>
+</body>
+<footer>
+    
+</footer>
+</html>

@@ -1,0 +1,238 @@
+body {
+    margin: 0;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: medium;
+    font-weight: bold;
+    background-color: white;
+}
+
+header {
+    background-image: radial-gradient(ellipse at 30% 90%, crimson 0%, black 70%);
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    border-bottom: 2px solid black;
+}
+
+#dark {
+    background-color: black;
+    border: 3px inset blueviolet;
+    border-radius: 75px;
+    color: white;
+    transition: 0.3s ease-in-out;
+}
+
+#dark.active {
+    border: 3px inset black;
+    background-color: white;
+    color: black;
+}
+
+#dark:hover {
+    border: 3px double cyan;
+}
+
+.moon:hover {
+    color: cyan;
+    border: none;
+}
+
+.tete {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.tete h1 {
+    color: white;
+    font-size: 2rem;
+    margin: 0;
+    letter-spacing: 2px;
+    text-shadow: 0 0 18px rgba(138, 43, 226, 0.5);
+}
+
+ul {
+    margin: 0;
+    padding: 0 0;
+}
+
+hr {
+    height: 1px;
+    width: 250px;
+    border: 0;
+    background-color: blueviolet;
+    box-shadow: 0 2px 3px black;
+}
+
+.menu {
+    background-color: transparent;
+    position: sticky;
+    top: 0;
+    height: 35px;
+    z-index: 100;
+}
+
+.menu ul {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Liens nav — mode clair */
+.menu a {
+    color: black;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.menu a:hover {
+    background-color: white;
+    color: blueviolet;
+    cursor: pointer;
+    padding: 5px 20px;
+    border-radius: 15px;
+}
+
+/* Nav scrollée (active) — mode clair */
+#menubar.active {
+    background-color: blueviolet;
+    padding: 12px 20px;
+    transition: ease-in-out 0.3s;
+}
+
+/* ── DARK MODE NAV ── */
+
+/* Nav non-scrollée en dark mode */
+body.dark .menu a {
+    color: white;
+}
+
+body.dark .menu a:hover {
+    background-color: silver;
+    color: blueviolet;
+}
+
+/* Nav scrollée en dark mode  */
+body.dark #menubar.active {
+    background-color: #1a0033;
+    border-bottom: 1px solid blueviolet;
+    color: white;
+}
+
+/* Bouton dark en mode dark + scrollé */
+body.dark #dark.active {
+    border: 3px inset blueviolet;
+    background-color: #1a1a2e;
+    color: white;
+}
+
+/* ── Slider ── */
+.vue_global {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.slide {
+    display: block;
+}
+
+.item {
+    display: none;
+    position: relative;
+}
+
+.item img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+    display: block;
+}
+
+.legend {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+
+.legend h2 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+}
+
+.legend p {
+    margin: 0;
+    font-weight: normal;
+    font-size: 0.9rem;
+}
+
+.prev,
+.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 10;
+    transition: background-color 0.2s;
+}
+
+.prev:hover,
+.next:hover {
+    background-color: blueviolet;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+/* ── Sections ── */
+.accueil {
+    margin-left: 20px;
+}
+
+.appareil {
+    margin-left: 20px;
+}
+
+.client {
+    margin-left: 20px;
+}
+
+.location {
+    margin-left: 20px;
+}
+
+.admin {
+    margin-left: 20px;
+}
+
+/* ── Dark mode global ── */
+body.dark {
+    background-color: black;
+    color: white;
+}
