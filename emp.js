@@ -5,7 +5,7 @@ function selectionner(btn) {
     document.getElementById('ncin_mod').value = row.dataset.ncin;
     document.getElementById('nom_mod').value = row.dataset.nom;
     document.getElementById('tel_mod').value = row.dataset.tel;
-    document.getElementById('mdp_mod').value = ''; // ne jamais pré-remplir le mot de passe
+    document.getElementById('mdp_mod').value = ''; 
 
     const sel = document.getElementById('adr_mod');
     for (let opt of sel.options) {

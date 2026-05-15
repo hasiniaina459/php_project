@@ -78,15 +78,8 @@ $employes = $pdo->query(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employés</title>
+    <title>administration</title>
     <link rel="stylesheet" href="appstyle.css">
-    <style>
-        .affichage { overflow-x: auto; width: 100%; }
-        .affichage table { width: 100%; border-collapse: collapse; table-layout: auto; }
-        .affichage table thead tr { background: #4a0e6e; color: #fff; }
-        .affichage table th, .affichage table td { padding: 8px 12px; border: 1px solid #ddd; text-align: left; white-space: nowrap; }
-        .affichage table tbody tr:nth-child(even) { background: #f5f5f5; }
-    </style>
 </head>
 <body>
     <header>

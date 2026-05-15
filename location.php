@@ -159,7 +159,7 @@ $appareils = $pdo->query("SELECT CODE_app, marque, LIB_app FROM APPAREIL ORDER B
                 <select name="CODE_app" id="codeapp_add">
                     <?php foreach ($appareils as $a): ?>
                     <option value="<?= $a['CODE_app'] ?>">
-                        <?= htmlspecialchars((string)($a['marque'] ?? '') . ' – ' . (string)($a['LIB_app'] ?? '')) ?>
+                        <?= htmlspecialchars((string)($a['marque'] ?? '') . ' ' . (string)($a['LIB_app'] ?? '')) ?>
                     </option>
                     <?php endforeach; ?>
                 </select>
@@ -203,7 +203,7 @@ $appareils = $pdo->query("SELECT CODE_app, marque, LIB_app FROM APPAREIL ORDER B
                 <select name="CODE_app" id="codeapp_mod">
                     <?php foreach ($appareils as $a): ?>
                     <option value="<?= $a['CODE_app'] ?>">
-                        <?= htmlspecialchars((string)($a['marque'] ?? '') . ' – ' . (string)($a['LIB_app'] ?? '')) ?>
+                        <?= htmlspecialchars((string)($a['marque'] ?? '') . '  ' . (string)($a['LIB_app'] ?? '')) ?>
                     </option>
                     <?php endforeach; ?>
                 </select>
