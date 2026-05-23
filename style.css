@@ -82,6 +82,7 @@ hr {
     justify-content: flex-end;
     align-items: center;
     gap: 15px;
+    margin-right: 1px;
 }
 
 /* Liens nav — mode clair */
@@ -103,6 +104,7 @@ hr {
 #menubar.active {
     background-color: blueviolet;
     padding: 12px 20px;
+    border-bottom: 2px solid color-mix(in srgb, purple 80%, black 15%);
     transition: ease-in-out 0.3s;
 }
 
@@ -210,29 +212,223 @@ body.dark #dark.active {
     right: 10px;
 }
 
+/* le lien hamburger (dernier <li>) toujours caché sur grand écran */
+.menu ul li:last-child {
+    display: none;
+}
+
 /* ── Sections ── */
-.accueil {
-    margin-left: 20px;
+.accueil,.appareil,.client,.location,.admin {
+    margin: 0 20px;
+    padding: 20px 0;
 }
 
-.appareil {
-    margin-left: 20px;
+.accueil p,.client p,.location p,.admin p {
+    line-height: 1.8;
+    max-width: 700px;
 }
 
-.client {
-    margin-left: 20px;
+/* Liens "En savoir plus" / "Accéder" */
+.accueil a,.appareil a,.client a,.location a,.admin a {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 22px;
+    background-color: blueviolet;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: background 0.2s;
 }
 
-.location {
-    margin-left: 20px;
+.accueil a:hover,.appareil a:hover,.client a:hover,.location a:hover,.admin a:hover {
+    background-color: midnightblue;
+    text-decoration: underline;
 }
 
-.admin {
-    margin-left: 20px;
+body.dark .accueil a,
+body.dark .appareil a,
+body.dark .client a,
+body.dark .location a,
+body.dark .admin a {
+    background-color: #3C3489;
+}
+
+/* ── Footer ── */
+footer {
+    background-color: #1a0033;
+    color: #CECBF6;
+    padding: 20px 30px;
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    font-size: 14px;
+}
+
+footer p {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
 /* ── Dark mode global ── */
 body.dark {
-    background-color: black;
+    background-color: #0d0d1a;
     color: white;
+}
+
+
+@media (max-width: 768px) {
+
+    /* Header plus compact */
+    header {
+        height: 90px;
+    }
+
+    .tete h1 {
+        font-size: 1.5rem;
+    }
+
+    /* Sections avec padding latéral réduit */
+    .accueil,
+    .appareil,
+    .client,
+    .location,
+    .admin {
+        margin: 0 12px;
+        padding: 16px 0;
+    }
+        /* le hamburger devient visible */
+    .menu ul li:last-child {
+        display: flex;
+        align-items: center;
+    }
+    
+    /* les liens de navigation (li 2 à 6) sont cachés par défaut */
+    .menu ul li:not(:first-child):not(:last-child) {
+        display: none;
+    }
+    
+    /* quand le menu est ouvert (.open sur la nav) → les liens apparaissent */
+    .menu ul.open li:not(:first-child):not(:last-child) {
+        display: flex;
+    }
+    /* la nav passe en colonne quand ouverte */
+    .menu ul.open {
+        flex-direction: column;
+        align-items: flex-end;
+        background-color: blueviolet;
+        padding: 10px 20px;
+        gap: 10px;
+        border-radius: 0 0 15px 15px;
+    }
+    
+    /* le bouton dark et le hamburger restent sur la même ligne en haut */
+    .menu ul {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 5px 15px;
+    }
+    
+    /* dark mode mobile menu ouvert */
+    body.dark .menu ul.open {
+        background-color: #1a0033;
+        border-bottom: 1px solid blueviolet;
+    }
+
+    /* Slider un peu moins haut */
+    .item img {
+        height: 280px;
+    }
+
+    /* hr centré et plus court */
+    hr {
+        width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    /* Header encore plus compact */
+    header {
+        height: 70px;
+    }
+
+    .tete h1 {
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+
+    /* Sections pleine largeur */
+    .accueil,
+    .appareil,
+    .client,
+    .location,
+    .admin {
+        margin: 0 10px;
+        padding: 14px 0;
+    }
+
+    /* Titres de section plus petits */
+    .accueil h3,
+    .appareil h3,
+    .client h3,
+    .location h3,
+    .admin h3 {
+        font-size: 1rem;
+    }
+
+    /* Texte plus lisible */
+    .accueil p,
+    .client p,
+    .location p,
+    .admin p {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    /* Slider plus petit sur mobile */
+    .item img {
+        height: 200px;
+    }
+
+    /* Légende du slider plus compacte */
+    .legend {
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        padding: 8px 10px;
+    }
+
+    .legend h2 {
+        font-size: 0.9rem;
+    }
+
+    .legend p {
+        font-size: 0.78rem;
+    }
+
+    /* Boutons prev/next plus petits */
+    .prev,
+    .next {
+        font-size: 16px;
+        padding: 7px;
+    }
+
+    /* hr encore plus court */
+    hr {
+        width: 100px;
+    }
+
+    /* Footer en colonne */
+    footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 16px;
+        gap: 8px;
+    }
 }

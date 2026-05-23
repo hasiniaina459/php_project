@@ -1,3 +1,11 @@
+window.addEventListener("scroll", function () {
+    const nav = document.getElementById("entete");
+    if (window.scrollY > 50) {
+        nav.classList.add("active");
+    } else {
+        nav.classList.remove("active");
+    }
+});
 function selectionner(btn) {
     const row = btn.closest('tr');
 

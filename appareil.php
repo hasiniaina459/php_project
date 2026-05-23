@@ -12,11 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $prix      = trim($_POST['prix']      ?? '');
 
     if ($marque && $libelle && $categorie && $prix !== '' && $etat !== null) {
-        $stmt = $pdo->prepare(
+        $cmd = $pdo->prepare(
             "INSERT INTO APPAREIL (marque, LIB_app, categorie, ETAT_app, prix)
             VALUES (?, ?, ?, ?, ?)"
         );
-        $stmt->execute([$marque, $libelle, $categorie, $etat, $prix]);
+        $cmd->execute([$marque, $libelle, $categorie, $etat, $prix]);
         $message = '<p class="msg success">&#10004; Appareil ajouté avec succès.</p>';
     } else {
         $message = '<p class="msg error">&#10008; Veuillez remplir tous les champs.</p>';
@@ -33,12 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['modifier'], $_GET['napp
     $prix      = trim($_GET['prix']      ?? '');
 
     if ($id && $marque && $libelle && $categorie && $prix !== '' && $etat !== null) {
-        $stmt = $pdo->prepare(
+        $cmd = $pdo->prepare(
             "UPDATE APPAREIL
             SET marque=?, LIB_app=?, categorie=?, ETAT_app=?, prix=?
             WHERE CODE_app=?"
         );
-        $stmt->execute([$marque, $libelle, $categorie, $etat, $prix, $id]);
+        $cmd->execute([$marque, $libelle, $categorie, $etat, $prix, $id]);
         $message = '<p class="msg success">&#10004; Appareil modifié avec succès.</p>';
     } else {
         $message = '<p class="msg error">&#10008; Veuillez remplir tous les champs.</p>';
@@ -71,17 +71,56 @@ $appareils = $pdo->query(
     <link rel="stylesheet" href="appstyle.css">
 </head>
 <body>
-    <header>
+    <header id="entete">
         <a href="index.html">&#10096;</a>
         <h1>APPAREIL</h1>
     </header>
 
     <?= $message ?>
+    <div class="stat">
+        <div class="total">
+            <label for="number_app">nombre total <br> appareil</label>
+            <label for="nbapp">
+                <?php
+                $cmd = $pdo->prepare(
+                "SELECT COUNT(*) FROM APPAREIL"
+                );
+                $cmd->execute();
+                echo $cmd->fetchColumn();
+            ?>
+            </label>
+        </div>
+        <div class="total_bon">
+            <label for="number_cli">nombre total <br> appareil en bon etat</label>
+            <label for="nbapp">
+                <?php
+                $cmd = $pdo->prepare(
+                "SELECT COUNT(*) FROM APPAREIL WHERE ETAT_app>0"
+                );
+                $cmd->execute();
+                echo $cmd->fetchColumn();
+            ?>
+            </label>
+        </div>
+        <div class="total_mauvais">
+            <label for="number_cli">nombre total <br> appareil à reparer </label>
+            <label for="nbapp">
+                <?php
+                $cmd = $pdo->prepare(
+                "SELECT COUNT(*) FROM APPAREIL WHERE ETAT_app < 1"
+                );
+                $cmd->execute();
+                echo $cmd->fetchColumn();
+            ?>
+            </label>
+        </div>
+    </div>
 
     <section>
         <!--  TABLEAU D'AFFICHAGE  -->
-        <div class="affichage">
-            <table>
+        <div class="affichage">           
+            <div class="affichage-scroll">
+                <table>
                 <thead>
                     <tr>
                         <th>CODE</th>
@@ -123,6 +162,7 @@ $appareils = $pdo->query(
                 <?php endif; ?>
                 </tbody>
             </table>
+            </div>
         </div>
 
         <!--  FORMULAIRES  -->

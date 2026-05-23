@@ -74,17 +74,31 @@ $clients = $pdo->query(
     
 </head>
 <body>
-    <header>
+    <header id="entete">
         <a href="index.html">&#10096;</a>
         <h1>CLIENT</h1>
     </header>
 
     <?= $message ?>
-
+    <div class="stat">
+        <div class="total">
+            <label for="number_app">nombre total <br> de client </label>
+            <label for="nbcli">
+                <?php
+                $cmd = $pdo->prepare(
+                "SELECT COUNT(*) FROM CLIENT"
+                );
+                $cmd->execute();
+                echo $cmd->fetchColumn();
+            ?>
+            </label>
+        </div>
+    </div>
     <section>
         <!-- ── TABLEAU D'AFFICHAGE ── -->
         <div class="affichage">
-            <table>
+            <div class="affichage-scroll">
+                <table>
                 <thead>
                     <tr>
                         <th>N° Client</th>
@@ -100,7 +114,7 @@ $clients = $pdo->query(
                 <tbody>
                 <?php if (empty($clients)): ?>
                     <tr>
-                        <td colspan="8" style="text-align:center;color:#888;padding:20px;">
+                        <td colspan="8">
                             Aucun client enregistré.
                         </td>
                     </tr>
@@ -129,6 +143,7 @@ $clients = $pdo->query(
                 <?php endif; ?>
                 </tbody>
             </table>
+            </div>
         </div>
 
         <!-- ── FORMULAIRES ── -->

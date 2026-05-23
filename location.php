@@ -82,17 +82,55 @@ $appareils = $pdo->query("SELECT CODE_app, marque, LIB_app FROM APPAREIL ORDER B
     <link rel="stylesheet" href="appstyle.css">
 </head>
 <body>
-    <header>
+    <header id="entete">
         <a href="index.html">&#10096;</a>
         <h1>LOCATION</h1>
     </header>
 
     <?= $message ?>
-
+    <div class="stat">
+        <div class="total">
+            <label for="number_app">nombre total <br>de location</label>
+            <label for="nbloc">
+                <?php
+                $cmd = $pdo->prepare(
+                "SELECT COUNT(*) FROM ENREGISTREMENT"
+                );
+                $cmd->execute();
+                echo $cmd->fetchColumn();
+            ?>
+            </label>
+        </div>
+        <div class="total_bon">
+            <label for="number_cli">nombre total <br>de location en cours</label>
+            <label for="nbloc">
+                <?php
+                $cmd = $pdo->prepare(
+                "SELECT COUNT(*) FROM ENREGISTREMENT WHERE statue_reg>0"
+                );
+                $cmd->execute();
+                echo $cmd->fetchColumn();
+            ?>
+            </label>
+        </div>
+        <div class="total_mauvais">
+            <label for="number_cli">nombre total <br>de location terminée </label>
+            <label for="nbloc">
+                <?php
+                $cmd = $pdo->prepare(
+                "SELECT COUNT(*) FROM ENREGISTREMENT WHERE statue_reg < 1"
+                );
+                $cmd->execute();
+                echo $cmd->fetchColumn();
+            ?>
+            </label>
+        </div>
+    </div>
     <section>
         <!-- ── TABLEAU D'AFFICHAGE ── -->
         <div class="affichage">
-            <table>
+            <div class="affichage-scroll">
+                <table>
                 <thead>
                     <tr>
                         <th>N° Enreg.</th>
@@ -137,6 +175,7 @@ $appareils = $pdo->query("SELECT CODE_app, marque, LIB_app FROM APPAREIL ORDER B
                 <?php endif; ?>
                 </tbody>
             </table>
+            </div>
         </div>
 
         <!-- ── FORMULAIRES ── -->

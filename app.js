@@ -1,3 +1,11 @@
+window.addEventListener("scroll", function () {
+    const tet = document.getElementById("entete");
+    if (window.scrollY > 50) {
+        tet.classList.add("active");
+    } else {
+        tet.classList.remove("active");
+    }
+});
 // Remplit le formulaire Modifier/Supprimer au clic sur "Selectionner"
 function selectionner(btn) {
     const row = btn.closest('tr');

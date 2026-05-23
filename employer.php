@@ -82,17 +82,31 @@ $employes = $pdo->query(
     <link rel="stylesheet" href="appstyle.css">
 </head>
 <body>
-    <header>
+    <header id="entete">
         <a href="index.html">&#10096;</a>
         <h1>EMPLOYÉ</h1>
     </header>
 
     <?= $message ?>
-
+    <div class="stat">
+        <div class="total">
+            <label for="number_app">nombre total <br> d'employé </label>
+            <label for="nbapp">
+                <?php
+                $cmd = $pdo->prepare(
+                "SELECT COUNT(*) FROM EMPLOYER"
+                );
+                $cmd->execute();
+                echo $cmd->fetchColumn();
+            ?>
+            </label>
+        </div>
+    </div>
     <section>
         <!-- TABLEAU D'AFFICHAGE -->
         <div class="affichage">
-            <table>
+            <div class="affichage-scroll">
+                <table>
                 <thead>
                     <tr>
                         <th>N° Emp.</th>
@@ -131,6 +145,7 @@ $employes = $pdo->query(
                 <?php endif; ?>
                 </tbody>
             </table>
+            </div>
         </div>
 
         <!-- FORMULAIRES -->
