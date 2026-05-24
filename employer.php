@@ -12,12 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $motdepasse = trim($_POST['motdepasse'] ?? '');
 
     if ($ncin_emp && $nom_emp && $tel_emp && $adr_emp && $motdepasse) {
-        $hash = password_hash($motdepasse, PASSWORD_DEFAULT);
+        
         $stmt = $pdo->prepare(
             "INSERT INTO EMPLOYER (NCIN_emp, NOM_emp, TEL_emp, ADR_emp, motdepasse)
             VALUES (?, ?, ?, ?, ?)"
         );
-        $stmt->execute([$ncin_emp, $nom_emp, $tel_emp, $adr_emp, $hash]);
+        $stmt->execute([$ncin_emp, $nom_emp, $tel_emp, $adr_emp, $motdepasse]);
         $message = '<p class="msg success">&#10004; Employé ajouté avec succès.</p>';
     } else {
         $message = '<p class="msg error">&#10008; Veuillez remplir tous les champs.</p>';

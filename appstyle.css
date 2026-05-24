@@ -399,9 +399,9 @@ form>button[type="submit"]:hover {
     .stat{
         display: flex;
         flex-direction: column;
-        align-items: center;
-        
+        align-items: center; 
     }
+    
     section {
         grid-template-columns: 1fr;
         padding: 12px;

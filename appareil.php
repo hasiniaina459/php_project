@@ -64,12 +64,15 @@ $appareils = $pdo->query(
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appareil</title>
+    <script src="node_modules/chart.js/dist/chart.umd.js"></script>
     <link rel="stylesheet" href="appstyle.css">
 </head>
+
 <body>
     <header id="entete">
         <a href="index.html">&#10096;</a>
@@ -83,11 +86,11 @@ $appareils = $pdo->query(
             <label for="nbapp">
                 <?php
                 $cmd = $pdo->prepare(
-                "SELECT COUNT(*) FROM APPAREIL"
+                    "SELECT COUNT(*) FROM APPAREIL"
                 );
                 $cmd->execute();
                 echo $cmd->fetchColumn();
-            ?>
+                ?>
             </label>
         </div>
         <div class="total_bon">
@@ -95,11 +98,11 @@ $appareils = $pdo->query(
             <label for="nbapp">
                 <?php
                 $cmd = $pdo->prepare(
-                "SELECT COUNT(*) FROM APPAREIL WHERE ETAT_app>0"
+                    "SELECT COUNT(*) FROM APPAREIL WHERE ETAT_app>0"
                 );
                 $cmd->execute();
                 echo $cmd->fetchColumn();
-            ?>
+                ?>
             </label>
         </div>
         <div class="total_mauvais">
@@ -107,61 +110,115 @@ $appareils = $pdo->query(
             <label for="nbapp">
                 <?php
                 $cmd = $pdo->prepare(
-                "SELECT COUNT(*) FROM APPAREIL WHERE ETAT_app < 1"
+                    "SELECT COUNT(*) FROM APPAREIL WHERE ETAT_app < 1"
                 );
                 $cmd->execute();
                 echo $cmd->fetchColumn();
-            ?>
+                ?>
             </label>
+        </div>
+        <div class="graphe">
+            <?php
+            $cmd = $pdo->query(
+                "SELECT categorie,COUNT(*) AS total
+                    FROM APPAREIL
+                    GROUP BY categorie
+                    ORDER BY total DESC"
+            );
+            $rows = $cmd->fetchAll(PDO::FETCH_ASSOC);
+
+            $labels = array_column($rows, 'categorie');
+            $data = array_column($rows, 'total');
+            $json_label = json_encode($labels, JSON_UNESCAPED_UNICODE);
+            $json_data = json_encode($data);
+            ?>
+            <canvas id="grapheapp"></canvas>
+            <script>
+                const labels = <?= $json_label ?>;
+                const data = <?= $json_data ?>;
+                const con = document.getElementById('grapheapp');
+                const chart = new Chart(con, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'appareil par categorie',
+                            data: data,
+
+                            backgroundColor: [
+                                'rgb(231, 9, 146)',
+                                'rgb(3, 1, 167)',
+                                'rgba(231, 16, 9, 0.66)',
+                            ],
+
+                            borderColor:'black'
+                        }]
+                    },
+                    options:{
+                        responsive:true,
+                        maintainAspectRadio:true,
+                        plugins:{
+                            legend:{
+                                position:bottom
+                            },
+                            title:{
+                                display:true,
+                                text:'nombre par categorie'
+                            }
+                        }
+                    }
+                })
+                chart.update();
+            </script>
         </div>
     </div>
 
     <section>
         <!--  TABLEAU D'AFFICHAGE  -->
-        <div class="affichage">           
+        <div class="affichage">
             <div class="affichage-scroll">
                 <table>
-                <thead>
-                    <tr>
-                        <th>CODE</th>
-                        <th>Marque</th>
-                        <th>Libellé</th>
-                        <th>Catégorie</th>
-                        <th>État</th>
-                        <th>Prix</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php if (empty($appareils)): ?>
-                    <tr>
-                        <td colspan="7" style="text-align:center;color:#888;padding:20px;">
-                            Aucun appareil enregistré.
-                        </td>
-                    </tr>
-                <?php else: ?>
-                    <?php foreach ($appareils as $row): ?>
-                    <tr class="ligne-appareil"
-                        data-id="<?= $row['CODE_app'] ?>"
-                        data-marque="<?= htmlspecialchars((string)($row['marque']    ?? ''), ENT_QUOTES) ?>"
-                        data-libelle="<?= htmlspecialchars((string)($row['LIB_app']  ?? ''), ENT_QUOTES) ?>"
-                        data-categorie="<?= htmlspecialchars((string)($row['categorie'] ?? ''), ENT_QUOTES) ?>"
-                        data-etat="<?= (int)($row['ETAT_app'] ?? 0) ?>"
-                        data-prix="<?= htmlspecialchars((string)($row['prix'] ?? ''), ENT_QUOTES) ?>">
-                        <td><?= $row['CODE_app'] ?></td>
-                        <td><?= htmlspecialchars((string)($row['marque']    ?? '')) ?></td>
-                        <td><?= htmlspecialchars((string)($row['LIB_app']  ?? '')) ?></td>
-                        <td><?= htmlspecialchars((string)($row['categorie'] ?? '')) ?></td>
-                        <td><?= ($row['ETAT_app'] ?? 0) ? 'Bon' : 'Mauvais' ?></td>
-                        <td><?= htmlspecialchars((string)($row['prix'] ?? '')) ?> Ar</td>
-                        <td>
-                            <button class="btn-select" onclick="selectionner(this)">Sélectionner</button>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-                </tbody>
-            </table>
+                    <thead>
+                        <tr>
+                            <th>CODE</th>
+                            <th>Marque</th>
+                            <th>Libellé</th>
+                            <th>Catégorie</th>
+                            <th>État</th>
+                            <th>Prix</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($appareils)): ?>
+                            <tr>
+                                <td colspan="7" style="text-align:center;color:#888;padding:20px;">
+                                    Aucun appareil enregistré.
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($appareils as $row): ?>
+                                <tr class="ligne-appareil"
+                                    data-id="<?= $row['CODE_app'] ?>"
+                                    data-marque="<?= htmlspecialchars((string)($row['marque']    ?? ''), ENT_QUOTES) ?>"
+                                    data-libelle="<?= htmlspecialchars((string)($row['LIB_app']  ?? ''), ENT_QUOTES) ?>"
+                                    data-categorie="<?= htmlspecialchars((string)($row['categorie'] ?? ''), ENT_QUOTES) ?>"
+                                    data-etat="<?= (int)($row['ETAT_app'] ?? 0) ?>"
+                                    data-prix="<?= htmlspecialchars((string)($row['prix'] ?? ''), ENT_QUOTES) ?>">
+                                    <td><?= $row['CODE_app'] ?></td>
+                                    <td><?= htmlspecialchars((string)($row['marque']    ?? '')) ?></td>
+                                    <td><?= htmlspecialchars((string)($row['LIB_app']  ?? '')) ?></td>
+                                    <td><?= htmlspecialchars((string)($row['categorie'] ?? '')) ?></td>
+                                    <td><?= ($row['ETAT_app'] ?? 0) ? 'Bon' : 'Mauvais' ?></td>
+                                    <td><?= htmlspecialchars((string)($row['prix'] ?? '')) ?> Ar</td>
+                                    <td>
+                                        <button class="btn-select" onclick="selectionner(this)">Sélectionner</button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -235,7 +292,7 @@ $appareils = $pdo->query(
                 </p>
 
                 <div class="updet">
-                    <button type="submit" name="modifier"  id="btn-modifier"  disabled>Modifier</button>
+                    <button type="submit" name="modifier" id="btn-modifier" disabled>Modifier</button>
                     <button type="submit" name="supprimer" id="btn-supprimer" disabled>Supprimer</button>
                 </div>
             </form>
@@ -246,4 +303,5 @@ $appareils = $pdo->query(
     <script src="app.js">
     </script>
 </body>
+
 </html>

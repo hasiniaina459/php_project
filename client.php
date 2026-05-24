@@ -66,13 +66,15 @@ $clients = $pdo->query(
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Client</title>
     <link rel="stylesheet" href="appstyle.css">
-    
+    <script src="node_modules/chart.js/dist/chart.umd.js"></script>
 </head>
+
 <body>
     <header id="entete">
         <a href="index.html">&#10096;</a>
@@ -86,12 +88,84 @@ $clients = $pdo->query(
             <label for="nbcli">
                 <?php
                 $cmd = $pdo->prepare(
-                "SELECT COUNT(*) FROM CLIENT"
+                    "SELECT COUNT(*) FROM CLIENT"
                 );
                 $cmd->execute();
                 echo $cmd->fetchColumn();
-            ?>
+                ?>
             </label>
+        </div>
+        <div class="graphe">
+            <?php
+            //requete pour stat
+            $cmd = $pdo->query(
+                "SELECT ADR_cli AS PROVINCE,COUNT(*) AS TOTAL
+                    FROM CLIENT
+                    GROUP BY ADR_cli
+                    ORDER BY TOTAL DESC"
+            );
+            $rows = $cmd->fetchAll(PDO::FETCH_ASSOC);
+            // separration de province et total
+            $labels = array_column($rows, 'PROVINCE');
+            $data = array_column($rows, 'TOTAL');
+            $json_labels = json_encode($labels, JSON_UNESCAPED_UNICODE);
+            $json_data = json_encode($data);
+            ?>
+            <canvas id="grapheclient" height="220"></canvas>
+            <script>
+                const labels = <?= $json_labels ?>;
+                const data = <?= $json_data ?>;
+                const con = document.getElementById('grapheclient');
+                const monchart = new Chart(con, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'client par provinces',
+                            data: data,
+                            //remplissage
+                            backgroundColor: [                             
+                                'rgb(231, 9, 146)',                                
+                                'rgb(3, 1, 167)',                                
+                                'rgba(231, 16, 9, 0.66)',                                
+                                'rgb(4, 240, 248)',                                
+                                'rgb(248, 252, 2)',                                
+                                'rgb(3, 206, 13)',                                
+                            ],
+                            //bourdure
+                            borderColor: 'black',
+                            borderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            title: {
+                                display: true,
+                                text: 'client par province'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(0,0,0,0.06)',
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        }
+                    }
+                })
+                monchart.update();
+            </script>
         </div>
     </div>
     <section>
@@ -99,50 +173,50 @@ $clients = $pdo->query(
         <div class="affichage">
             <div class="affichage-scroll">
                 <table>
-                <thead>
-                    <tr>
-                        <th>N° Client</th>
-                        <th>CIN</th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Province</th>
-                        <th>Email</th>
-                        <th>Téléphone</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php if (empty($clients)): ?>
-                    <tr>
-                        <td colspan="8">
-                            Aucun client enregistré.
-                        </td>
-                    </tr>
-                <?php else: ?>
-                    <?php foreach ($clients as $row): ?>
-                    <tr class="ligne-client"
-                        data-id="<?= $row['N_cli'] ?>"
-                        data-ncin="<?= htmlspecialchars((string)($row['NCIN']      ?? ''), ENT_QUOTES) ?>"
-                        data-nom="<?= htmlspecialchars((string)($row['NOM_cli']    ?? ''), ENT_QUOTES) ?>"
-                        data-prenom="<?= htmlspecialchars((string)($row['prenom']  ?? ''), ENT_QUOTES) ?>"
-                        data-province="<?= htmlspecialchars((string)($row['ADR_cli'] ?? ''), ENT_QUOTES) ?>"
-                        data-email="<?= htmlspecialchars((string)($row['email']    ?? ''), ENT_QUOTES) ?>"
-                        data-telephone="<?= htmlspecialchars((string)($row['TEL_cli'] ?? ''), ENT_QUOTES) ?>">
-                        <td><?= $row['N_cli'] ?></td>
-                        <td><?= htmlspecialchars((string)($row['NCIN']      ?? '')) ?></td>
-                        <td><?= htmlspecialchars((string)($row['NOM_cli']   ?? '')) ?></td>
-                        <td><?= htmlspecialchars((string)($row['prenom']    ?? '')) ?></td>
-                        <td><?= htmlspecialchars((string)($row['ADR_cli']   ?? '')) ?></td>
-                        <td><?= htmlspecialchars((string)($row['email']     ?? '')) ?></td>
-                        <td><?= htmlspecialchars((string)($row['TEL_cli']   ?? '')) ?></td>
-                        <td>
-                            <button class="btn-select" onclick="selectionner(this)">Sélectionner</button>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-                </tbody>
-            </table>
+                    <thead>
+                        <tr>
+                            <th>N° Client</th>
+                            <th>CIN</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Province</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($clients)): ?>
+                            <tr>
+                                <td colspan="8">
+                                    Aucun client enregistré.
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($clients as $row): ?>
+                                <tr class="ligne-client"
+                                    data-id="<?= $row['N_cli'] ?>"
+                                    data-ncin="<?= htmlspecialchars((string)($row['NCIN']      ?? ''), ENT_QUOTES) ?>"
+                                    data-nom="<?= htmlspecialchars((string)($row['NOM_cli']    ?? ''), ENT_QUOTES) ?>"
+                                    data-prenom="<?= htmlspecialchars((string)($row['prenom']  ?? ''), ENT_QUOTES) ?>"
+                                    data-province="<?= htmlspecialchars((string)($row['ADR_cli'] ?? ''), ENT_QUOTES) ?>"
+                                    data-email="<?= htmlspecialchars((string)($row['email']    ?? ''), ENT_QUOTES) ?>"
+                                    data-telephone="<?= htmlspecialchars((string)($row['TEL_cli'] ?? ''), ENT_QUOTES) ?>">
+                                    <td><?= $row['N_cli'] ?></td>
+                                    <td><?= htmlspecialchars((string)($row['NCIN']      ?? '')) ?></td>
+                                    <td><?= htmlspecialchars((string)($row['NOM_cli']   ?? '')) ?></td>
+                                    <td><?= htmlspecialchars((string)($row['prenom']    ?? '')) ?></td>
+                                    <td><?= htmlspecialchars((string)($row['ADR_cli']   ?? '')) ?></td>
+                                    <td><?= htmlspecialchars((string)($row['email']     ?? '')) ?></td>
+                                    <td><?= htmlspecialchars((string)($row['TEL_cli']   ?? '')) ?></td>
+                                    <td>
+                                        <button class="btn-select" onclick="selectionner(this)">Sélectionner</button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -215,7 +289,7 @@ $clients = $pdo->query(
                 <p id="hint-selection">&larr; Sélectionnez une ligne dans le tableau.</p>
 
                 <div class="updet">
-                    <button type="submit" name="modifier"  id="btn-modifier"  disabled>Modifier</button>
+                    <button type="submit" name="modifier" id="btn-modifier" disabled>Modifier</button>
                     <button type="submit" name="supprimer" id="btn-supprimer" disabled>Supprimer</button>
                 </div>
             </form>
@@ -224,4 +298,5 @@ $clients = $pdo->query(
     </section>
     <script src="cli.js"></script>
 </body>
+
 </html>
