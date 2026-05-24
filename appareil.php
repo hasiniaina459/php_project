@@ -156,10 +156,10 @@ $appareils = $pdo->query(
                     },
                     options:{
                         responsive:true,
-                        maintainAspectRadio:true,
+                        maintainAspectRatio:true,
                         plugins:{
                             legend:{
-                                position:bottom
+                                position:'bottom'
                             },
                             title:{
                                 display:true,
