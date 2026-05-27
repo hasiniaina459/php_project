@@ -1,9 +1,4 @@
 <?php
-session_start();
-if (!isset($_SESSION['emp_id'])) {
-    header("Location: form_pen.php"); // pas connecté → renvoi au login
-    exit;
-}
 //  Connexion PDO 
 require "connexion.php";
 $message = '';

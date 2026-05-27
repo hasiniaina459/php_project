@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Connexion réussie → redirection vers pen.php
             session_start();
             $_SESSION['emp_id'] = $id;
-            header("Location: pen.php");
+            header("Location: employer.php");
             exit;
         } else {
             $erreur = "Numéro, nom ou mot de passe incorrect.";
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <form method="POST" action="form_pen.php">
-        <h1>Connexion pénalité</h1>
+        <h1>Connexion admin</h1>
 
         <?php if (!empty($erreur)): ?>
             <p style="color:red; text-align:center;"><?= htmlspecialchars($erreur) ?></p>

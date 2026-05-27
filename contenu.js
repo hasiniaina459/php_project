@@ -1,6 +1,6 @@
 window.addEventListener("scroll", function () {
     const nav = document.getElementById("menubar");
-    if (window.scrollY > 150) {
+    if (window.scrollY > 120) {
         nav.classList.add("active");
     } else {
         nav.classList.remove("active");
@@ -8,7 +8,7 @@ window.addEventListener("scroll", function () {
 });
 window.addEventListener("scroll", function () {
     const btn = document.getElementById("dark");
-    if (window.scrollY > 150) {
+    if (window.scrollY > 120) {
         btn.classList.add("active");
     } else {
         btn.classList.remove("active");
@@ -43,7 +43,7 @@ document.getElementById("dark").addEventListener("click", function () {
     document.body.classList.toggle("dark");
 });
 
-/* ── Hamburger menu ── */
+//ùenu hamburger
 const hamburger = document.querySelector(".menu ul li:last-child a");
 const navUl = document.querySelector(".menu ul");
 

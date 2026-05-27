@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION['emp_id'])) {
+    header("Location: form_pen.php"); // pas connecté → renvoi au login
+    exit;
+}
 //  Connexion PDO 
 require "connexion.php";
 $message = '';
@@ -12,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $motdepasse = trim($_POST['motdepasse'] ?? '');
 
     if ($ncin_emp && $nom_emp && $tel_emp && $adr_emp && $motdepasse) {
-        
+
         $stmt = $pdo->prepare(
             "INSERT INTO EMPLOYER (NCIN_emp, NOM_emp, TEL_emp, ADR_emp, motdepasse)
             VALUES (?, ?, ?, ?, ?)"
@@ -75,76 +80,96 @@ $employes = $pdo->query(
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>administration</title>
     <link rel="stylesheet" href="appstyle.css">
 </head>
+
 <body>
-    <header id="entete">
+    <header>
         <a href="index.html">&#10096;</a>
-        <h1>EMPLOYÉ</h1>
+        <div class="tete">
+            <div class="visible">
+                <h1>ADMINISTRATEUR</h1>
+                <a href="#" class="menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M3 5h18v2H3zm0 6h18v2H3zm0 6h18v2H3z"></path>
+                    </svg></a>
+            </div>
+            <div id="pen">
+                <a href="javascript:void(0)" onclick="closemenu(event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" viewBox="0 0 24 24">
+                        <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
+                        <path d="M14.83 7.76 12 10.59 9.17 7.76 7.76 9.17 10.59 12l-2.83 2.83 1.41 1.41L12 13.41l2.83 2.83 1.41-1.41L13.41 12l2.83-2.83z"></path>
+                        <path d="M12 2C9.33 2 6.82 3.04 4.93 4.93S2 9.33 2 12s1.04 5.18 2.93 7.07c1.95 1.95 4.51 2.92 7.07 2.92s5.12-.97 7.07-2.92S22 14.67 22 12s-1.04-5.18-2.93-7.07A9.93 9.93 0 0 0 12 2m5.66 15.66c-3.12 3.12-8.19 3.12-11.31 0-1.51-1.51-2.34-3.52-2.34-5.66s.83-4.15 2.34-5.66S9.87 4 12.01 4s4.15.83 5.66 2.34 2.34 3.52 2.34 5.66-.83 4.15-2.34 5.66Z"></path>
+                    </svg></a>
+                <a href="pen.php">ajouter pen</a>
+            </div>
+        </div>
     </header>
 
     <?= $message ?>
     <div class="stat">
         <div class="total">
-            <label for="number_app">nombre total <br> d'employé </label>
+            <label for="number_app">nombre total <br> d'administrateur </label>
             <label for="nbapp">
                 <?php
                 $cmd = $pdo->prepare(
-                "SELECT COUNT(*) FROM EMPLOYER"
+                    "SELECT COUNT(*) FROM EMPLOYER"
                 );
                 $cmd->execute();
                 echo $cmd->fetchColumn();
-            ?>
+                ?>
             </label>
         </div>
+
     </div>
     <section>
         <!-- TABLEAU D'AFFICHAGE -->
         <div class="affichage">
             <div class="affichage-scroll">
                 <table>
-                <thead>
-                    <tr>
-                        <th>N° Emp.</th>
-                        <th>NCIN</th>
-                        <th>Nom</th>
-                        <th>Téléphone</th>
-                        <th>Adresse</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php if (empty($employes)): ?>
-                    <tr>
-                        <td colspan="6" style="text-align:center;color:#888;padding:20px;">
-                            Aucun employé enregistré.
-                        </td>
-                    </tr>
-                <?php else: ?>
-                    <?php foreach ($employes as $row): ?>
-                    <tr class="ligne-employe"
-                        data-id="<?= $row['N_emp'] ?>"
-                        data-ncin="<?= htmlspecialchars($row['NCIN_emp'], ENT_QUOTES) ?>"
-                        data-nom="<?= htmlspecialchars($row['NOM_emp'],   ENT_QUOTES) ?>"
-                        data-tel="<?= htmlspecialchars($row['TEL_emp'],   ENT_QUOTES) ?>"
-                        data-adr="<?= htmlspecialchars($row['ADR_emp'],   ENT_QUOTES) ?>">
-                        <td><?= $row['N_emp'] ?></td>
-                        <td><?= htmlspecialchars($row['NCIN_emp']) ?></td>
-                        <td><?= htmlspecialchars($row['NOM_emp']) ?></td>
-                        <td><?= htmlspecialchars($row['TEL_emp']) ?></td>
-                        <td><?= htmlspecialchars($row['ADR_emp']) ?></td>
-                        <td>
-                            <button class="btn-select" onclick="selectionner(this)">Sélectionner</button>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-                </tbody>
-            </table>
+                    <thead>
+                        <tr>
+                            <th>N° Emp.</th>
+                            <th>NCIN</th>
+                            <th>Nom</th>
+                            <th>Téléphone</th>
+                            <th>Adresse</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($employes)): ?>
+                            <tr>
+                                <td colspan="6" style="text-align:center;color:#888;padding:20px;">
+                                    Aucun employé enregistré.
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($employes as $row): ?>
+                                <tr class="ligne-employe"
+                                    data-id="<?= $row['N_emp'] ?>"
+                                    data-ncin="<?= htmlspecialchars($row['NCIN_emp'], ENT_QUOTES) ?>"
+                                    data-nom="<?= htmlspecialchars($row['NOM_emp'],   ENT_QUOTES) ?>"
+                                    data-tel="<?= htmlspecialchars($row['TEL_emp'],   ENT_QUOTES) ?>"
+                                    data-adr="<?= htmlspecialchars($row['ADR_emp'],   ENT_QUOTES) ?>">
+                                    <td><?= $row['N_emp'] ?></td>
+                                    <td><?= htmlspecialchars($row['NCIN_emp']) ?></td>
+                                    <td><?= htmlspecialchars($row['NOM_emp']) ?></td>
+                                    <td><?= htmlspecialchars($row['TEL_emp']) ?></td>
+                                    <td><?= htmlspecialchars($row['ADR_emp']) ?></td>
+                                    <td>
+                                        <button class="btn-select" onclick="selectionner(this)">Sélectionner</button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -213,7 +238,7 @@ $employes = $pdo->query(
                 <p id="hint-selection">&larr; Sélectionnez une ligne dans le tableau.</p>
 
                 <div class="updet">
-                    <button type="submit" name="modifier"  id="btn-modifier"  disabled>Modifier</button>
+                    <button type="submit" name="modifier" id="btn-modifier" disabled>Modifier</button>
                     <button type="submit" name="supprimer" id="btn-supprimer" disabled>Supprimer</button>
                 </div>
             </form>
@@ -223,4 +248,5 @@ $employes = $pdo->query(
 
     <script src="emp.js"></script>
 </body>
+
 </html>

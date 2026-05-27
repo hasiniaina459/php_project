@@ -1,11 +1,15 @@
-window.addEventListener("scroll", function () {
-    const nav = document.getElementById("entete");
-    if (window.scrollY > 50) {
-        nav.classList.add("active");
-    } else {
-        nav.classList.remove("active");
-    }
+//menu
+document.querySelector('.menu').addEventListener("click", function (e) {
+    e.stopPropagation();
+    const nav = document.getElementById('pen');
+    nav.classList.add("open");
 });
+function closemenu(e) {
+    e.stopPropagation();
+    const nav = document.getElementById('pen');
+    nav.classList.remove("open");
+}
+//activation du bouton selection
 function selectionner(btn) {
     const row = btn.closest('tr');
 

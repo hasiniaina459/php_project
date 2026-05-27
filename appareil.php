@@ -138,7 +138,7 @@ $appareils = $pdo->query(
                 const data = <?= $json_data ?>;
                 const con = document.getElementById('grapheapp');
                 const chart = new Chart(con, {
-                    type: 'pie',
+                    type: 'doughnut',
                     data: {
                         labels: labels,
                         datasets: [{
@@ -151,19 +151,19 @@ $appareils = $pdo->query(
                                 'rgba(231, 16, 9, 0.66)',
                             ],
 
-                            borderColor:'black'
+                            borderColor: 'black'
                         }]
                     },
-                    options:{
-                        responsive:true,
-                        maintainAspectRatio:true,
-                        plugins:{
-                            legend:{
-                                position:'bottom'
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
                             },
-                            title:{
-                                display:true,
-                                text:'nombre par categorie'
+                            title: {
+                                display: true,
+                                text: 'nombre par categorie'
                             }
                         }
                     }

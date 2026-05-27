@@ -124,13 +124,13 @@ $clients = $pdo->query(
                             label: 'client par provinces',
                             data: data,
                             //remplissage
-                            backgroundColor: [                             
-                                'rgb(231, 9, 146)',                                
-                                'rgb(3, 1, 167)',                                
-                                'rgba(231, 16, 9, 0.66)',                                
-                                'rgb(4, 240, 248)',                                
-                                'rgb(248, 252, 2)',                                
-                                'rgb(3, 206, 13)',                                
+                            backgroundColor: [
+                                'rgb(231, 9, 146)',
+                                'rgb(3, 1, 167)',
+                                'rgba(231, 16, 9, 0.66)',
+                                'rgb(4, 240, 248)',
+                                'rgb(248, 252, 2)',
+                                'rgb(3, 206, 13)',
                             ],
                             //bourdure
                             borderColor: 'black',
